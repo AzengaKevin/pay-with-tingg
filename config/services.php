@@ -31,4 +31,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'tingg' => [
+        'url' => env('TINGG_APP_URL'),
+        'app_id' => env('TINGG_APP_ID'),
+        'client_id' => env('TINGG_APP_KEY'),
+        'client_secret' => env('TINGG_APP_SECRET')
+    ]
+
 ];

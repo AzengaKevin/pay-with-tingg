@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Tingg\GetToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn () => view('welcome'));
+Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth'])->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/payments/authorize', function(GetToken $getToken){
+
+    $data = $getToken->execute([
+        'url' => config('services.tingg.url') . 'oauth/token/request',
+        'client_id' => config('services.tingg.client_id'),
+        'client_secret' => config('services.tingg.client_secret'),
+        'grant_type' => 'client_credentials'
+    ]);
+
+    return response()->json($data);
+
+});
 
 require __DIR__.'/auth.php';
